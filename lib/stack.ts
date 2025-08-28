@@ -1,4 +1,4 @@
-export class Stack<T> {
+export default class Stack<T> {
   items: Array<T>;
 
   constructor(items: Array<T> = []) {
