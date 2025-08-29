@@ -18,9 +18,10 @@ export default class Stack<T> {
    */
   pop(): T | undefined {
     if (this.items.length > 0) {
-      const item = this.items[this.items.length - 1];
-      this.items.splice(this.items.length - 1, 1);
-      return item;
+      const lastIndex = this.items.length - 1;
+      const popped = this.items[lastIndex];
+      this.items.splice(lastIndex, 1);
+      return popped;
     }
     return undefined;
   }
