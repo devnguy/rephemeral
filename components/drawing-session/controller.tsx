@@ -9,7 +9,7 @@ type ControllerProps = {
 export function Controller(props: ControllerProps) {
   const { onForward, onBack } = props;
   return (
-    <div className="flex space-x-4 z-10">
+    <div className="flex space-x-4">
       <Button variant="outline" onClick={onBack}>
         <ChevronLeft />
       </Button>

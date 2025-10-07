@@ -8,7 +8,7 @@ export function CurrentImage(props: CurrentImageProps) {
   const { src } = props;
 
   return (
-    <div className="h-[1104px] w-[736px] relative">
+    <div className="w-full h-full">
       <Image
         src={
           src ??
@@ -16,7 +16,7 @@ export function CurrentImage(props: CurrentImageProps) {
         }
         alt=""
         fill
-        objectFit="contain"
+        className="object-contain"
       />
     </div>
   );

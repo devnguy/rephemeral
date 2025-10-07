@@ -31,16 +31,24 @@ export default function DrawingSession() {
   };
 
   return (
-    <div className="flex flex-col justify-center space-y-4 items-center mb-12">
-      <CurrentImage src={state.current.src} />
-      <Controller onForward={handleForward} onBack={handleBack} />
-      <Timer seconds={state.current.interval} onTimeElapsed={handleForward} />
+    <div className="py-12 h-screen">
+      <div className="flex flex-col justify-center space-y-4 items-center h-full">
+        <div className="relative w-full h-[80vh] flex items-center justify-center">
+          <CurrentImage src={state.current.src} />
+        </div>
+        <Controller onForward={handleForward} onBack={handleBack} />
+        <Timer seconds={state.current.interval} onTimeElapsed={handleForward} />
+      </div>
     </div>
   );
 }
 
 function initializeState(): DrawingSessionState {
   const pool: Reference[] = [
+    {
+      src: "https://i.pinimg.com/1200x/93/e9/f7/93e9f73456983d14f60722ad9c71ccad.jpg",
+      interval: 4,
+    },
     {
       src: "https://i.pinimg.com/736x/1b/76/47/1b76478d2def47c4ebfee4252e94adb4.jpg",
       interval: 5,
@@ -54,11 +62,11 @@ function initializeState(): DrawingSessionState {
       interval: 4,
     },
     {
-      src: "https://i.pinimg.com/1200x/90/14/f8/9014f806d4a3d64a648540223bbe95e9.jpg",
+      src: "https://i.pinimg.com/1200x/32/9c/c8/329cc828e7cc0b078218ae7b072881bb.jpg",
       interval: 7,
     },
     {
-      src: "https://i.pinimg.com/736x/08/db/22/08db22a9ea7c801e574e1ada11a024cc.jpg",
+      src: "https://i.pinimg.com/736x/27/fe/5d/27fe5df7c2f6a6797af76313a874e461.jpg",
       interval: 8,
     },
   ];
@@ -70,7 +78,7 @@ function initializeState(): DrawingSessionState {
 
   return {
     index: 0,
-    total: 5,
+    total: pool.length,
     current: pool[randomIndex],
     history,
     pool: newPool,
