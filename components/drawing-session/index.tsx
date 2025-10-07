@@ -31,7 +31,7 @@ export default function DrawingSession() {
   };
 
   return (
-    <div className="py-12 h-screen">
+    <div className="py-12 px-4 h-screen">
       <div className="flex flex-col justify-center space-y-4 items-center h-full">
         <div className="relative w-full h-[80vh] flex items-center justify-center">
           <CurrentImage src={state.current.src} />
