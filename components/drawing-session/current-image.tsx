@@ -8,7 +8,7 @@ export function CurrentImage(props: CurrentImageProps) {
   const { src } = props;
 
   return (
-    <div className="w-full h-full">
+    <div className="relative w-full h-full">
       <Image
         src={
           src ??
