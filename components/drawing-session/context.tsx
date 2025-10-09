@@ -67,6 +67,9 @@ type DrawingSessionActionConfigure = {
   type: "CONFIGURE";
   payload: StandardSessionFormSchema;
 };
+type DrawingSessionActionReset = {
+  type: "RESET";
+};
 
 export function reducer(
   state: DrawingSessionState,

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDrawingSessionContext } from "@/components/drawing-session/context";
 
 type TimerProps = {
   seconds: number;
@@ -14,9 +15,12 @@ export function Timer(props: TimerProps) {
   const { seconds, onTimeElapsed, isPaused } = props;
   const [timeRemaining, setTimeRemaining] = useState(seconds);
 
+  const { state, dispatch } = useDrawingSessionContext();
+  const currentImage = state.current;
+
   useEffect(() => {
-    setTimeRemaining(seconds);
-  }, [seconds]);
+    setTimeRemaining(currentImage.interval);
+  }, [currentImage]);
 
   useEffect(() => {
     // TODO: handle the case when paused and user presses Next.
