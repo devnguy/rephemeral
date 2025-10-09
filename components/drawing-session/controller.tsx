@@ -7,30 +7,38 @@ import {
   Play,
   Square,
 } from "lucide-react";
+import { useDrawingSessionContext } from "./context";
 
-type ControllerProps = {
-  isPaused: boolean;
-  onForward: () => void;
-  onBack: () => void;
-  onTogglePause: () => void;
-  onStop: () => void;
-};
+export function Controller() {
+  const { state, dispatch } = useDrawingSessionContext();
+  const handleForward = () => {
+    dispatch({ type: "FORWARD" });
+  };
 
-export function Controller(props: ControllerProps) {
-  const { isPaused, onForward, onBack, onTogglePause, onStop } = props;
+  const handleBack = () => {
+    dispatch({ type: "BACK" });
+  };
+
+  const handleTogglePause = () => {
+    dispatch({ type: "TOGGLE_PAUSE" });
+  };
+
+  const handleStop = () => {
+    dispatch({ type: "STOP" });
+  };
 
   return (
     <div className="flex space-x-4">
-      <Button variant="outline" onClick={onBack}>
+      <Button variant="outline" onClick={handleBack}>
         <ChevronLeft />
       </Button>
-      <Button variant="outline" onClick={onTogglePause}>
-        {isPaused ? <Play /> : <Pause />}
+      <Button variant="outline" onClick={handleTogglePause}>
+        {state.isPaused ? <Play /> : <Pause />}
       </Button>
-      <Button variant="outline" onClick={onStop}>
+      <Button variant="outline" onClick={handleStop}>
         <Square />
       </Button>
-      <Button variant="outline" onClick={onForward}>
+      <Button variant="outline" onClick={handleForward}>
         <ChevronRight />
       </Button>
       <Button variant="outline">
