@@ -18,7 +18,7 @@ type DrawingSessionContextType = {
   dispatch: ActionDispatch<[action: DrawingSessionAction]>;
 };
 
-export const DrawingSessionContext = createContext<
+const DrawingSessionContext = createContext<
   DrawingSessionContextType | undefined
 >(undefined);
 

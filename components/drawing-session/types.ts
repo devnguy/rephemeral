@@ -6,7 +6,7 @@ export type Reference = {
 export type DrawingSessionState = {
   index: number;
   total: number;
-  history: Array<Reference>; // want this to be an interface
+  history: Array<Reference>;
   pool: {
     images: Array<string>;
     intervals: Array<number>;
