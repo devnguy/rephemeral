@@ -23,9 +23,9 @@ import {
 import { useDrawingSessionContext } from "@/components/drawing-session/context";
 import { useRouter } from "next/navigation";
 import { BoardGroup } from "@/components/image-group";
-import { getPinsByBoardId } from "@/data/fakeBoardsData";
-import { ImageSourceResponse, Pin } from "@/app/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { SectionLabel, SectionRows } from "./section-row";
 
 const numericString = z.string().refine(
   (v) => {
@@ -43,20 +43,17 @@ const FormSchema = z.object({
 
 export type StandardSessionFormSchema = z.infer<typeof FormSchema>;
 
-function getImagesFromResponse(
-  response: ImageSourceResponse<Pin>,
-): Array<string> {
-  const images = response.items.map((item) => {
-    const vals = Object.values(item.media.images);
-    return vals[vals.length - 1].url;
-  });
-
-  return images;
+enum SessionType {
+  STANDARD = "STANDARD",
+  CLASS = "CLASS",
 }
 
 export function StandardSessionForm() {
   const router = useRouter();
   const { state, dispatch } = useDrawingSessionContext();
+  const [sessionType, setSessionType] = useState<SessionType>(
+    SessionType.STANDARD,
+  );
 
   const form = useForm<StandardSessionFormSchema>({
     resolver: zodResolver(FormSchema),
@@ -67,7 +64,6 @@ export function StandardSessionForm() {
   });
 
   function onSubmit(data: StandardSessionFormSchema) {
-    // TODO: parse data to validate
     dispatch({
       type: "INIT",
       payload: data,
@@ -100,61 +96,90 @@ export function StandardSessionForm() {
         </div>
 
         <div className="w-full flex flex-col items-center justify-center space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-1/2">
-            <FormField
-              control={form.control}
-              name="total"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Number of Images</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="5">5</SelectItem>
-                      <SelectItem value="10">10</SelectItem>
-                      <SelectItem value="15">15</SelectItem>
-                      <SelectItem value="20">20</SelectItem>
-                      <SelectItem value="30">30</SelectItem>
-                      <SelectItem value="50">50</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="interval"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Interval</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="10">10</SelectItem>
-                      <SelectItem value="30">30</SelectItem>
-                      <SelectItem value="60">60</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <ToggleGroup
+            type="single"
+            defaultValue={sessionType}
+            onValueChange={(val: SessionType) => {
+              setSessionType(val);
+            }}
+          >
+            <ToggleGroupItem
+              value={SessionType.STANDARD}
+              aria-label="Toggle standard"
+            >
+              <div className="h-4 px-4">Standard</div>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value={SessionType.CLASS}
+              aria-label="Toggle class"
+            >
+              <div className="h-4 px-4">Class</div>
+            </ToggleGroupItem>
+          </ToggleGroup>
+
+          {/* Create separate component? */}
+          {sessionType === SessionType.STANDARD ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-1/2">
+              <FormField
+                control={form.control}
+                name="total"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Number of Images</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="15">15</SelectItem>
+                        <SelectItem value="20">20</SelectItem>
+                        <SelectItem value="30">30</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="interval"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Interval</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="30">30</SelectItem>
+                        <SelectItem value="60">60</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          ) : (
+            <>
+              <SectionLabel />
+              <SectionRows form={form} />
+            </>
+          )}
 
           <div className="md:w-1/2 w-full">
             <Button size="lg" type="submit">
