@@ -290,7 +290,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/1200x/93/e9/f7/93e9f73456983d14f60722ad9c71ccad.jpg,",
+                url: "https://i.pinimg.com/1200x/93/e9/f7/93e9f73456983d14f60722ad9c71ccad.jpg",
               },
             },
           },
@@ -300,7 +300,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/736x/1b/76/47/1b76478d2def47c4ebfee4252e94adb4.jpg,",
+                url: "https://i.pinimg.com/736x/1b/76/47/1b76478d2def47c4ebfee4252e94adb4.jpg",
               },
             },
           },
@@ -310,7 +310,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/736x/e5/93/bd/e593bd305eb6f2057d735c7d786f0800.jpg,",
+                url: "https://i.pinimg.com/736x/e5/93/bd/e593bd305eb6f2057d735c7d786f0800.jpg",
               },
             },
           },
@@ -320,7 +320,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/1200x/63/93/38/63933826489b96732e4f5b5560c09b7f.jpg,",
+                url: "https://i.pinimg.com/1200x/63/93/38/63933826489b96732e4f5b5560c09b7f.jpg",
               },
             },
           },
@@ -330,7 +330,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/1200x/32/9c/c8/329cc828e7cc0b078218ae7b072881bb.jpg,",
+                url: "https://i.pinimg.com/1200x/32/9c/c8/329cc828e7cc0b078218ae7b072881bb.jpg",
               },
             },
           },
@@ -340,7 +340,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/736x/27/fe/5d/27fe5df7c2f6a6797af76313a874e461.jpg,",
+                url: "https://i.pinimg.com/736x/27/fe/5d/27fe5df7c2f6a6797af76313a874e461.jpg",
               },
             },
           },
@@ -358,7 +358,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/400x300/fd/cd/d5/fdcdd5a6d8a80824add0d054125cd957.jpg,",
+                url: "https://i.pinimg.com/400x300/fd/cd/d5/fdcdd5a6d8a80824add0d054125cd957.jpg",
               },
             },
           },
@@ -368,7 +368,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/150x150/b4/57/10/b45710f1ede96af55230f4b43935c4af.jpg,",
+                url: "https://i.pinimg.com/150x150/b4/57/10/b45710f1ede96af55230f4b43935c4af.jpg",
               },
             },
           },
@@ -378,7 +378,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/150x150/dd/ff/46/ddff4616e39c1935cd05738794fa860e.jpg,",
+                url: "https://i.pinimg.com/150x150/dd/ff/46/ddff4616e39c1935cd05738794fa860e.jpg",
               },
             },
           },
@@ -388,7 +388,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/150x150/84/ac/59/84ac59b670ccb5b903dace480a98930c.jpg,",
+                url: "https://i.pinimg.com/150x150/84/ac/59/84ac59b670ccb5b903dace480a98930c.jpg",
               },
             },
           },
@@ -398,7 +398,7 @@ export function getPinsByBoardId(boardId: string): ImageSourceResponse<Pin> {
           media: {
             images: {
               "1200x": {
-                url: "https://i.pinimg.com/150x150/4c/54/6f/4c546f521be85e30838fb742bfff6936.jpg,",
+                url: "https://i.pinimg.com/150x150/4c/54/6f/4c546f521be85e30838fb742bfff6936.jpg",
               },
             },
           },
