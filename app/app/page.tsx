@@ -2,8 +2,10 @@ import { StandardSessionForm } from "@/components/session-config/standard-sessio
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 py-8">
-      <StandardSessionForm />
+    <div className="px-4 md:px-16">
+      <div className="flex flex-col items-center justify-center space-y-8">
+        <StandardSessionForm />
+      </div>
     </div>
   );
 }

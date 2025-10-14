@@ -14,12 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UseFormReturn } from "react-hook-form";
+import {
+  Control,
+  useFieldArray,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 import { StandardSessionFormSchema } from "./standard-session-form";
 import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp, Plus, Trash } from "lucide-react";
 import { ButtonGroup } from "../ui/button-group";
-import { useState } from "react";
 
 export function SectionLabel() {
   return (
@@ -34,17 +38,22 @@ export function SectionLabel() {
   );
 }
 
-type SectionRowProps = {
-  form: UseFormReturn<StandardSessionFormSchema>;
-};
-
-export function SectionRow(props: SectionRowProps) {
-  const { form } = props;
+export function SectionRow({
+  index,
+  control,
+  onSwapAction,
+  onRemoveAction,
+}: {
+  index: number;
+  control: Control<StandardSessionFormSchema>;
+  onSwapAction: (from: number, to: number) => void;
+  onRemoveAction: (i: number) => void;
+}) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-1/2">
       <FormField
-        control={form.control}
-        name="total"
+        control={control}
+        name={`sections.${index}.count` as const}
         render={({ field }) => (
           <FormItem className="w-full">
             <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -67,8 +76,8 @@ export function SectionRow(props: SectionRowProps) {
         )}
       />
       <FormField
-        control={form.control}
-        name="interval"
+        control={control}
+        name={`sections.${index}.interval` as const}
         render={({ field }) => (
           <FormItem className="w-full">
             <Select onValueChange={field.onChange} defaultValue={field.value}>
@@ -89,15 +98,31 @@ export function SectionRow(props: SectionRowProps) {
       />
       <ButtonGroup>
         <ButtonGroup>
-          <Button variant={"outline"} type="button">
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => {
+              if (index !== 0) {
+                console.log("swap", index, index - 1);
+                onSwapAction(index, index - 1);
+              }
+            }}
+          >
             <ChevronUp />
           </Button>
-          <Button variant={"outline"} type="button">
+          <Button variant="outline" type="button" onClick={() => {}}>
             <ChevronDown />
           </Button>
         </ButtonGroup>
         <ButtonGroup>
-          <Button variant={"outline"} type="button">
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => {
+              console.log(index);
+              onRemoveAction(index);
+            }}
+          >
             <Trash />
           </Button>
         </ButtonGroup>
@@ -106,33 +131,47 @@ export function SectionRow(props: SectionRowProps) {
   );
 }
 
-export function SectionRows(props: SectionRowProps) {
-  const { form } = props;
+export function SectionRows(props: {
+  control: Control<StandardSessionFormSchema>;
+}) {
+  const { control } = props;
 
-  const [rows, setRows] = useState([{}]);
+  const sectionsField = useFieldArray({ name: "sections" });
 
   return (
-    <div className="w-full">
-      <div className="space-y-4 flex flex-col justify-center items-center">
-        {rows.map((row, i) => (
-          <SectionRow key={i} form={form} />
-        ))}
+    <div className="">
+      <SectionLabel />
+      <div className="space-y-4 flex flex-col">
+        {sectionsField.fields.map((val, i) => {
+          return (
+            <SectionRow
+              key={val.id}
+              index={i}
+              control={control}
+              onSwapAction={sectionsField.swap}
+              onRemoveAction={sectionsField.remove}
+            />
+          );
+        })}
       </div>
 
-      <Button
-        variant={"outline"}
-        type="button"
-        onClick={() => {
-          setRows((prev) => {
-            return [...prev, {}];
-          });
-        }}
-      >
-        <span>
-          <Plus />
-        </span>
-        <span>Add Section</span>
-      </Button>
+      <div className="w-1/2">
+        <Button
+          variant={"outline"}
+          type="button"
+          onClick={() => {
+            sectionsField.append({
+              count: "10",
+              interval: "10",
+            });
+          }}
+        >
+          <span>
+            <Plus />
+          </span>
+          <span>Add Section</span>
+        </Button>
+      </div>
     </div>
   );
 }

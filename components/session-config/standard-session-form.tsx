@@ -25,7 +25,7 @@ import { useRouter } from "next/navigation";
 import { BoardGroup } from "@/components/image-group";
 import { useEffect, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
-import { SectionLabel, SectionRows } from "./section-row";
+import { SectionRows } from "./section-row";
 
 const numericString = z.string().refine(
   (v) => {
@@ -35,10 +35,16 @@ const numericString = z.string().refine(
   { message: "Invalid number" },
 );
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
   total: numericString,
   interval: numericString,
   boardId: z.string(),
+  sections: z.array(
+    z.object({
+      count: numericString,
+      interval: numericString,
+    }),
+  ),
 });
 
 export type StandardSessionFormSchema = z.infer<typeof FormSchema>;
@@ -64,12 +70,13 @@ export function StandardSessionForm() {
   });
 
   function onSubmit(data: StandardSessionFormSchema) {
-    dispatch({
-      type: "INIT",
-      payload: data,
-    });
-
-    router.push("/app/session");
+    // dispatch({
+    //   type: "INIT",
+    //   payload: data,
+    // });
+    //
+    // router.push("/app/session");
+    console.log({ data });
   }
 
   useEffect(() => {
@@ -79,12 +86,13 @@ export function StandardSessionForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
-        <div className="p-8">
+        <div className="">
           <FormField
             control={form.control}
             name="boardId"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Choose a Board</FormLabel>
                 <BoardGroup
                   value={field.value}
                   onValueChangeAction={field.onChange}
@@ -95,7 +103,7 @@ export function StandardSessionForm() {
           />
         </div>
 
-        <div className="w-full flex flex-col items-center justify-center space-y-8">
+        <div className="w-full flex flex-col space-y-8">
           <ToggleGroup
             type="single"
             defaultValue={sessionType}
@@ -175,10 +183,7 @@ export function StandardSessionForm() {
               />
             </div>
           ) : (
-            <>
-              <SectionLabel />
-              <SectionRows form={form} />
-            </>
+            <SectionRows control={form.control} />
           )}
 
           <div className="md:w-1/2 w-full">
