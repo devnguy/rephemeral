@@ -7,7 +7,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Control, UseFieldArrayReturn } from "react-hook-form";
-import { SessionConfigFormSchema } from "@/components/session-config";
+import {
+  DEFAULT_SECTION_CONFIG,
+  SessionConfigFormSchema,
+} from "@/components/session-config";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Plus, Trash } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -29,10 +32,7 @@ export function ClassModeForm(props: {
   const { control, fieldArray } = props;
 
   const handleAdd = () => {
-    fieldArray.append({
-      count: "10",
-      interval: "10",
-    });
+    fieldArray.append(DEFAULT_SECTION_CONFIG);
   };
 
   return (

@@ -45,6 +45,11 @@ enum SessionType {
   CLASS = "CLASS",
 }
 
+export const DEFAULT_SECTION_CONFIG = {
+  count: "10",
+  interval: "30",
+};
+
 export function StandardSessionForm() {
   const router = useRouter();
   const { state, dispatch } = useDrawingSessionContext();
@@ -55,12 +60,7 @@ export function StandardSessionForm() {
   const form = useForm<SessionConfigFormSchema>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      sections: [
-        {
-          count: "10",
-          interval: "10",
-        },
-      ],
+      sections: [DEFAULT_SECTION_CONFIG],
     },
   });
 
@@ -80,7 +80,6 @@ export function StandardSessionForm() {
     });
 
     router.push("/app/session");
-    // console.log({ data });
   }
 
   useEffect(() => {
