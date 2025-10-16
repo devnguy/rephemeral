@@ -20,8 +20,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ClassModeForm } from "@/components//session-config/class-mode-form";
 import { StandardModeForm } from "@/components//session-config/standard-mode-form";
 import { BoardItem } from "@/app/types";
-import { getPinsByBoardId } from "../drawing-session/actions";
-import { getImagesFromResponse } from "../drawing-session/reducer";
+import { getPinsByBoardId } from "@/components/drawing-session/actions";
+import { getImagesFromResponse } from "@/components/drawing-session/helpers";
 
 const numericString = z.string().refine(
   (v) => {
