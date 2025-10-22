@@ -37,11 +37,11 @@ export function ClassModeForm(props: {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-1/2">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4">
         <div>
           <FormLabel>Number of Images</FormLabel>
         </div>
-        <div>
+        <div className="col-span-2">
           <FormLabel>Interval</FormLabel>
         </div>
       </div>
@@ -96,7 +96,7 @@ function SectionRow(props: SectionRowProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-1/2">
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4">
       <FormField
         control={control}
         name={`sections.${index}.count` as const}

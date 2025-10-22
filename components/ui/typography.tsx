@@ -5,7 +5,7 @@ function H1({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h1
       className={cn(
-        "scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance",
+        "scroll-m-20 text-center text-2xl font-medium tracking-tight text-balance",
         className,
       )}
       {...props}
@@ -14,7 +14,7 @@ function H1({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
 }
 function H2({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h1
+    <h2
       className={cn(
         "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
         className,
@@ -25,7 +25,7 @@ function H2({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
 }
 function H3({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h1
+    <h3
       className={cn(
         "scroll-m-20 text-2xl font-semibold tracking-tight",
         className,
@@ -36,7 +36,7 @@ function H3({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
 }
 function H4({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h1
+    <h4
       className={cn(
         "scroll-m-20 text-xl font-semibold tracking-tight",
         className,
@@ -45,13 +45,12 @@ function H4({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
     />
   );
 }
-function Small({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
-  return (
-    <small
-      className={cn("text-sm leading-none font-medium", className)}
-      {...props}
-    />
-  );
+
+function SectionHeading({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("font-semibold text-lg", className)} {...props} />;
 }
 function ExtraSmall({
   className,
@@ -65,4 +64,4 @@ function ExtraSmall({
   );
 }
 
-export { H1, H2, H3, H4, Small, ExtraSmall };
+export { H1, H2, H3, H4, SectionHeading, ExtraSmall };

@@ -16,9 +16,9 @@ export async function Header() {
 
   return (
     <div className="h-[64px] flex items-center justify-between">
-      <div className="flex">
+      <div className="flex items-center">
         <Link href="/app">
-          <Button variant="ghost" size="sm" className="p-0">
+          <Button variant="ghost" size="sm">
             <NotebookPen />
             <H3>Pose Pulse</H3>
           </Button>

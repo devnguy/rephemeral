@@ -23,6 +23,8 @@ import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { getPinsByBoardId } from "@/lib/api/pinterest/queries";
 import { getImagesFromResponse } from "@/components/drawing-session/helpers";
 import { BoardGroupSkeleton } from "@/components/ui/skeleton";
+import { Separator } from "../ui/separator";
+import { SectionHeading } from "../ui/typography";
 
 const numericString = z.string().refine(
   (v) => {
@@ -47,6 +49,7 @@ export type SessionConfigFormSchema = z.infer<typeof FormSchema>;
 enum SessionType {
   STANDARD = "STANDARD",
   CLASS = "CLASS",
+  CUSTOM = "CUSTOM",
 }
 
 export const DEFAULT_SECTION_CONFIG = {
@@ -110,7 +113,9 @@ export function SessionConfig(props: SessionConfigProps) {
               name="boardId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Choose a Board</FormLabel>
+                  <FormLabel>
+                    <SectionHeading>Choose Images</SectionHeading>
+                  </FormLabel>
                   <BoardGroup
                     boardsPromise={boardsPromise}
                     value={field.value}
@@ -123,38 +128,53 @@ export function SessionConfig(props: SessionConfigProps) {
           </div>
         </Suspense>
 
-        <div className="w-full flex flex-col space-y-8">
-          <ToggleGroup
-            type="single"
-            defaultValue={sessionType}
-            onValueChange={(val: SessionType) => {
-              setSessionType(val);
-            }}
-          >
-            <ToggleGroupItem
-              value={SessionType.STANDARD}
-              aria-label="Toggle standard"
-            >
-              <div className="h-4 px-4">Standard</div>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value={SessionType.CLASS}
-              aria-label="Toggle class"
-            >
-              <div className="h-4 px-4">Class</div>
-            </ToggleGroupItem>
-          </ToggleGroup>
+        <Separator />
 
-          {sessionType === SessionType.STANDARD ? (
-            <StandardModeForm control={form.control} />
-          ) : (
-            <ClassModeForm control={form.control} fieldArray={sectionsField} />
-          )}
+        <div className="grid gap-2">
+          <div>
+            <SectionHeading>Configure Session</SectionHeading>
+          </div>
 
-          <div className="md:w-1/2 w-full">
-            <Button size="lg" type="submit">
-              Start
-            </Button>
+          <div className="w-full flex flex-col space-y-4">
+            <ToggleGroup
+              type="single"
+              value={sessionType}
+              onValueChange={(val: SessionType) => {
+                if (val) setSessionType(val);
+              }}
+            >
+              <ToggleGroupItem
+                value={SessionType.STANDARD}
+                aria-label="Toggle standard"
+              >
+                Standard
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value={SessionType.CLASS}
+                aria-label="Toggle class"
+              >
+                Class
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value={SessionType.CUSTOM}
+                aria-label="Toggle custom"
+              >
+                Custom
+              </ToggleGroupItem>
+            </ToggleGroup>
+
+            {sessionType === SessionType.STANDARD ? (
+              <StandardModeForm control={form.control} />
+            ) : (
+              <ClassModeForm
+                control={form.control}
+                fieldArray={sectionsField}
+              />
+            )}
+
+            <div className="w-full">
+              <Button type="submit">Start</Button>
+            </div>
           </div>
         </div>
       </form>

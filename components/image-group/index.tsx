@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { H4, ExtraSmall } from "@/components/ui/typography";
+import { ExtraSmall, SectionHeading } from "@/components/ui/typography";
 import { Button } from "../ui/button";
 import { use, useState } from "react";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
@@ -108,8 +108,8 @@ export default function BoardGroupItem(props: BoardCardProps) {
               )}
             </div>
           </div>
-          <div className="h-[62px] p-2 text-left">
-            <H4>{board.name}</H4>
+          <div className="h-[48px] p-1 text-left overflow-ellipsis">
+            <SectionHeading>{board.name}</SectionHeading>
             <div>
               <p className="space-x-2">
                 <ExtraSmall>{board.pin_count} Pins</ExtraSmall>
