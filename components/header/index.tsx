@@ -13,9 +13,6 @@ import {
 
 export async function Header() {
   const session = await auth();
-  console.log({
-    session,
-  });
 
   return (
     <div className="h-[64px] flex items-center justify-between">
