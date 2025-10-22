@@ -1,4 +1,4 @@
-import { Header } from "@/components/header";
+import { Header, Nav } from "@/components/header";
 import { SessionConfig } from "@/components/session-config";
 import { getBoards } from "@/lib/api/pinterest/queries";
 
