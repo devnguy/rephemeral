@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImageSourceType, SessionType } from ".";
 
 export function CountSelect({ ...props }: React.ComponentProps<typeof Select>) {
   return (
@@ -46,6 +47,43 @@ export function IntervalSelect({
         <SelectItem value="300">5 min</SelectItem>
         <SelectItem value="600">10 min</SelectItem>
         <SelectItem value="1200">20 min</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
+export function SessionTypeSelect({
+  ...props
+}: React.ComponentProps<typeof Select>) {
+  return (
+    <Select {...props}>
+      <FormControl>
+        <SelectTrigger className="w-full">
+          <SelectValue />
+        </SelectTrigger>
+      </FormControl>
+      <SelectContent>
+        <SelectItem value={SessionType.STANDARD}>Standard</SelectItem>
+        <SelectItem value={SessionType.CLASS}>Class</SelectItem>
+        <SelectItem value={SessionType.CUSTOM}>Custom</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
+export function ImageSourceSelect({
+  ...props
+}: React.ComponentProps<typeof Select>) {
+  return (
+    <Select {...props}>
+      <FormControl>
+        <SelectTrigger className="w-full">
+          <SelectValue />
+        </SelectTrigger>
+      </FormControl>
+      <SelectContent>
+        <SelectItem value={ImageSourceType.PINTEREST}>Pinterest</SelectItem>
+        <SelectItem value={ImageSourceType.LOCAL}>Local</SelectItem>
       </SelectContent>
     </Select>
   );

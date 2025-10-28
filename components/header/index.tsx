@@ -18,8 +18,7 @@ export async function Header() {
     <div className="h-[64px] flex items-center justify-between">
       <div className="flex items-center">
         <Link href="/app">
-          <Button variant="ghost" size="sm">
-            <NotebookPen />
+          <Button variant="link" size="sm" className="p-0">
             <H3>Pose Pulse</H3>
           </Button>
         </Link>
