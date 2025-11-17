@@ -3,31 +3,25 @@
 import Image from "next/image";
 import { ExtraSmall, SectionHeading } from "@/components/ui/typography";
 import { Button } from "../ui/button";
-import { use, useState } from "react";
+import { use } from "react";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { formatDistanceToNowShort } from "@/lib/utils";
+import { useFormContext } from "react-hook-form";
+import { SessionConfigFormSchema } from "../session-config";
 
 type BoardGroupProps = {
-  value: string | undefined;
   onValueChangeAction: (v: string) => void;
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
-  // boardsData: ImageSourceResponse<BoardItem>;
 };
 
 type BoardCardProps = {
   board: BoardItem;
-  value: string;
-  selected: boolean;
   onClickAction: () => void;
 };
 
 export function BoardGroup(props: BoardGroupProps): React.ReactElement {
-  const { value, onValueChangeAction, boardsPromise } = props;
+  const { onValueChangeAction, boardsPromise } = props;
   const boards = use(boardsPromise);
-
-  console.log({ boards });
-
-  const [currentValue, setCurrentValue] = useState<string | undefined>(value);
 
   return (
     <div className="flex justify-center w-full">
@@ -35,11 +29,8 @@ export function BoardGroup(props: BoardGroupProps): React.ReactElement {
         {boards.items.map((board) => (
           <BoardGroupItem
             key={board.id}
-            value={board.id}
             board={board}
-            selected={currentValue === board.id}
             onClickAction={() => {
-              setCurrentValue(board.id);
               onValueChangeAction(board.id);
             }}
           />
@@ -50,7 +41,10 @@ export function BoardGroup(props: BoardGroupProps): React.ReactElement {
 }
 
 export default function BoardGroupItem(props: BoardCardProps) {
-  const { onClickAction, board, selected } = props;
+  const { onClickAction, board } = props;
+  const { getValues } = useFormContext<SessionConfigFormSchema>();
+  const isSelected = getValues("boardId") === board.id;
+
   const cover = board.media.image_cover_url;
   const thumbnails = board.media.pin_thumbnail_urls;
 
@@ -64,7 +58,7 @@ export default function BoardGroupItem(props: BoardCardProps) {
       >
         <div
           className={
-            selected
+            isSelected
               ? "flex flex-col aspect-3/2 w-full "
               : "flex flex-col aspect-3/2 w-full opacity-50"
           }

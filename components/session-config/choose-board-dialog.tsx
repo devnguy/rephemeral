@@ -16,14 +16,15 @@ import { BoardGroup } from "../image-group";
 import { BoardGroupSkeleton } from "../ui/skeleton";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { SessionConfigFormSchema } from ".";
-import { Control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 type ChooseBoardDialogProps = {
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
-  control: Control<SessionConfigFormSchema>;
 };
+
 export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
-  const { boardsPromise, control } = props;
+  const { boardsPromise } = props;
+  const { control } = useFormContext<SessionConfigFormSchema>();
 
   return (
     <Dialog>
@@ -45,7 +46,6 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
                   <FormItem>
                     <BoardGroup
                       boardsPromise={boardsPromise}
-                      value={field.value}
                       onValueChangeAction={field.onChange}
                     />
                     <FormMessage />

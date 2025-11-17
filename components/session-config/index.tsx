@@ -1,47 +1,31 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormDescription,
-  FormField,
   FormItem,
   FormLabel,
-  FormMessage,
   FormRow,
 } from "@/components/ui/form";
 import { useDrawingSessionContext } from "@/components/drawing-session/context";
 import { useRouter } from "next/navigation";
-import { BoardGroup } from "@/components/image-group";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ClassModeForm } from "@/components//session-config/class-mode-form";
 import { StandardModeForm } from "@/components//session-config/standard-mode-form";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { getPinsByBoardId } from "@/lib/api/pinterest/queries";
 import { getImagesFromResponse } from "@/components/drawing-session/helpers";
-import { BoardGroupSkeleton } from "@/components/ui/skeleton";
 import { SectionHeading, SectionSubHeading } from "../ui/typography";
-import { ScrollArea } from "../ui/scroll-area";
-import { Switch } from "../ui/switch";
-import { FileDropInput, Input } from "../ui/input";
+import { Switch } from "@/components/ui/switch";
+import { FileDropInput } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Card, CardContent } from "../ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "../ui/label";
-import { ChooseBoardDialog } from "./choose-board-dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { ChooseBoardDialog } from "@/components/session-config/choose-board-dialog";
 
 const numericString = z.string().refine(
   (v) => {
@@ -90,9 +74,6 @@ export function SessionConfig(props: SessionConfigProps) {
   const [sessionType, setSessionType] = useState<SessionType>(
     SessionType.STANDARD,
   );
-  const [imageSourceType, setImageSourceType] = useState<ImageSourceType>(
-    ImageSourceType.LOCAL,
-  );
 
   const form = useForm<SessionConfigFormSchema>({
     resolver: zodResolver(FormSchema),
@@ -125,11 +106,6 @@ export function SessionConfig(props: SessionConfigProps) {
         },
       ],
     },
-  });
-
-  const sectionsField = useFieldArray({
-    name: "sections",
-    control: form.control,
   });
 
   async function onSubmit(data: SessionConfigFormSchema) {
@@ -181,10 +157,8 @@ export function SessionConfig(props: SessionConfigProps) {
                         The Pinterest board containing the reference images
                       </FormDescription>
                     </div>
-                    <ChooseBoardDialog
-                      boardsPromise={boardsPromise}
-                      control={form.control}
-                    />
+                    {/* choose board button or chosen board */}
+                    <ChooseBoardDialog boardsPromise={boardsPromise} />
                   </FormRow>
                 </CardContent>
               </Card>
@@ -211,27 +185,21 @@ export function SessionConfig(props: SessionConfigProps) {
             <TabsContent value={SessionType.STANDARD}>
               <Card className="p-0">
                 <CardContent>
-                  <StandardModeForm control={form.control} />
+                  <StandardModeForm />
                 </CardContent>
               </Card>
             </TabsContent>
             <TabsContent value={SessionType.CLASS}>
               <Card className="p-0">
                 <CardContent>
-                  <ClassModeForm
-                    control={form.control}
-                    fieldArray={sectionsField}
-                  />
+                  <ClassModeForm />
                 </CardContent>
               </Card>
             </TabsContent>
             <TabsContent value={SessionType.CUSTOM}>
               <Card className="p-0">
                 <CardContent>
-                  <ClassModeForm
-                    control={form.control}
-                    fieldArray={sectionsField}
-                  />
+                  <ClassModeForm />
                 </CardContent>
               </Card>
             </TabsContent>

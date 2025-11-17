@@ -1,7 +1,11 @@
 "use client";
 
 import { FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Control, UseFieldArrayReturn } from "react-hook-form";
+import {
+  useFieldArray,
+  UseFieldArrayReturn,
+  useFormContext,
+} from "react-hook-form";
 import {
   DEFAULT_SECTION_CONFIG,
   SessionConfigFormSchema,
@@ -27,15 +31,15 @@ import { useDragAndDropReorder } from "@/components/hooks/use-drag-and-drop-reor
 
 type SectionRowProps = {
   index: number;
-  control: Control<SessionConfigFormSchema>;
   fieldArray: UseFieldArrayReturn<SessionConfigFormSchema>;
 };
 
-export function ClassModeForm(props: {
-  control: Control<SessionConfigFormSchema>;
-  fieldArray: UseFieldArrayReturn<SessionConfigFormSchema>;
-}) {
-  const { control, fieldArray } = props;
+export function ClassModeForm() {
+  const { control } = useFormContext<SessionConfigFormSchema>();
+  const fieldArray = useFieldArray({
+    name: "sections",
+    control,
+  });
 
   const handleAdd = () => {
     fieldArray.append(DEFAULT_SECTION_CONFIG);
@@ -55,12 +59,7 @@ export function ClassModeForm(props: {
         <TableBody>
           {fieldArray.fields.map((val, i) => {
             return (
-              <SectionRow
-                key={val.id}
-                index={i}
-                control={control}
-                fieldArray={fieldArray}
-              />
+              <SectionRow key={val.id} index={i} fieldArray={fieldArray} />
             );
           })}
         </TableBody>
@@ -78,13 +77,20 @@ export function ClassModeForm(props: {
   );
 }
 
+/**
+ * Still figuring out how to useFieldArray in this component..
+ * Need to pass this component the entire fieldArray, rather than just the
+ * fieldArray element so:
+ * 1. It can determine the fieldArray length
+ * 2. It can rearrange the order of the elements
+ */
 function SectionRow(props: SectionRowProps) {
   const {
     index,
-    control,
     fieldArray: { fields, move, remove },
   } = props;
   const [shouldShowControls, setShouldShowControls] = useState(false);
+  const { control } = useFormContext<SessionConfigFormSchema>();
 
   const handleMove = useCallback(
     (from: number, to: number) => {
