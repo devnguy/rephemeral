@@ -8,9 +8,10 @@ import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { formatDistanceToNowShort } from "@/lib/utils";
 import { useFormContext } from "react-hook-form";
 import { SessionConfigFormSchema } from "../session-config";
+import { Board } from "../session-config/choose-board-dialog";
 
 type BoardGroupProps = {
-  onValueChangeAction: (v: string) => void;
+  onValueChangeAction: (v: Board) => void;
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
 };
 
@@ -31,7 +32,12 @@ export function BoardGroup(props: BoardGroupProps): React.ReactElement {
             key={board.id}
             board={board}
             onClickAction={() => {
-              onValueChangeAction(board.id);
+              onValueChangeAction({
+                id: board.id,
+                name: board.name,
+                count: board.pin_count,
+              });
+              // onValueChangeAction(board.id)
             }}
           />
         ))}
