@@ -29,7 +29,7 @@ type ChooseBoardDialogProps = {
  * The board input will change with UI interaction, and will replace the
  * selectedBoard form value when the user clicks "done" in the dialog. After
  * making changes, if the user clicks cancel, or closes the dialog, their
- * selection will be discarded.
+ * changes will be discarded.
  */
 export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
   const { boardsPromise } = props;
@@ -40,8 +40,19 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const handleCancel = () => {
+    setSelectedBoardInput(selectedBoard);
+  };
+
+  const handleOpenChange = (newIsOpenState: boolean) => {
+    setIsOpen(newIsOpenState);
+    if (newIsOpenState === false) {
+      handleCancel();
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {selectedBoard ? (
           <Button variant="ghost">
@@ -61,7 +72,8 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
           <Suspense fallback={<BoardGroupSkeleton />}>
             <BoardGroup
               boardsPromise={boardsPromise}
-              defaultSelected={selectedBoardInput}
+              defaultValue={selectedBoard}
+              value={selectedBoardInput}
               onValueChangeAction={(board: BoardItem) => {
                 console.log("onchangeaction", board);
                 setSelectedBoardInput(board);
@@ -76,12 +88,11 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
           <Button
             onClick={() => {
               // Commit the input to the form
+              setIsOpen(false);
               if (selectedBoardInput) {
                 setSelectedBoard(selectedBoardInput);
                 setValue("boardId", selectedBoardInput.id);
-                setSelectedBoardInput(selectedBoard);
               }
-              setIsOpen(false);
             }}
           >
             Done

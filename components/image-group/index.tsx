@@ -3,16 +3,15 @@
 import Image from "next/image";
 import { ExtraSmall, SectionHeading } from "@/components/ui/typography";
 import { Button } from "../ui/button";
-import { use, useState } from "react";
+import { use } from "react";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { formatDistanceToNowShort } from "@/lib/utils";
-import { useFormContext } from "react-hook-form";
-import { SessionConfigFormSchema } from "../session-config";
 
 type BoardGroupProps = {
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
   onValueChangeAction: (v: BoardItem) => void;
-  defaultSelected?: BoardItem;
+  defaultValue?: BoardItem;
+  value?: BoardItem;
 };
 
 type BoardCardProps = {
@@ -22,10 +21,8 @@ type BoardCardProps = {
 };
 
 export function BoardGroup(props: BoardGroupProps): React.ReactElement {
-  const { boardsPromise, onValueChangeAction, defaultSelected } = props;
+  const { boardsPromise, onValueChangeAction, defaultValue, value } = props;
   const boards = use(boardsPromise);
-
-  const [selected, setSelected] = useState<BoardItem>();
 
   return (
     <div className="flex justify-center w-full">
@@ -38,7 +35,13 @@ export function BoardGroup(props: BoardGroupProps): React.ReactElement {
               onValueChangeAction(board);
             }}
             isSelected={
-              defaultSelected && board.id === defaultSelected.id ? true : false
+              value
+                ? value.id === board.id
+                  ? true
+                  : false
+                : defaultValue?.id === board.id
+                  ? true
+                  : false
             }
           />
         ))}
