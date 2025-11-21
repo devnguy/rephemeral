@@ -1,6 +1,13 @@
 "use client";
 
-import { FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormRow,
+} from "@/components/ui/form";
 import {
   useFieldArray,
   UseFieldArrayReturn,
@@ -46,7 +53,22 @@ export function CustomModeForm() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="">
+      <FormRow>
+        <div className="flex flex-col flex-3 gap-1">
+          <FormLabel>Custom Sections</FormLabel>
+          <FormDescription>
+            Total number of images displayed during the session
+          </FormDescription>
+        </div>
+        <div>
+          <Button variant={"outline"} type="button" onClick={handleAdd}>
+            <Plus />
+            Add Section
+          </Button>
+        </div>
+        <FormMessage />
+      </FormRow>
       <Table>
         <TableHeader>
           <TableRow className="border-none hover:bg-transparent">
@@ -64,15 +86,6 @@ export function CustomModeForm() {
           })}
         </TableBody>
       </Table>
-
-      <div>
-        <Button variant={"outline"} type="button" onClick={handleAdd}>
-          <span>
-            <Plus />
-          </span>
-          <span>Add Section</span>
-        </Button>
-      </div>
     </div>
   );
 }

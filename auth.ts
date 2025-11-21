@@ -11,6 +11,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             "user_accounts:read boards:read boards:read_secret pins:read pins:read_secret",
         },
       },
+      clientId: process.env.AUTH_PINTEREST_ID,
+      clientSecret: process.env.AUTH_PINTEREST_SECRET,
     }),
   ],
   callbacks: {
@@ -50,8 +52,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             body: new URLSearchParams({
               grant_type: "refresh_token",
               refresh_token: token.refresh_token,
-              scope:
-                "user_accounts:read boards:read boards:read_secret pins:read pins:read_secret",
             }),
           },
         );
