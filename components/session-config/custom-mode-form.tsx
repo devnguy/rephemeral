@@ -36,7 +36,6 @@ import { useCallback, useState } from "react";
 import { cn, getIntervalLabel } from "@/lib/utils";
 import { DropIndicator } from "@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box";
 import { useDragAndDropReorder } from "@/components/hooks/use-drag-and-drop-reorder";
-import ReactDOM from "react-dom";
 
 type SectionRowProps = {
   index: number;

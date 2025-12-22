@@ -3,6 +3,11 @@ export type Reference = {
   interval: number;
 };
 
+export type Time = {
+  minutes: number;
+  seconds: number;
+};
+
 export type DrawingSessionState = {
   index: number;
   total: number;

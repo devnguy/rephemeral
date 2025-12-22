@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDrawingSessionContext } from "@/components/drawing-session/context";
+import { getTimeFromSeconds } from "@/lib/utils";
+import { Time } from "@/components/drawing-session/types";
 
 type TimerProps = {
   seconds: number;
@@ -13,34 +15,49 @@ type TimerProps = {
  */
 export function Timer(props: TimerProps) {
   const { seconds, onTimeElapsed, isPaused } = props;
-  const [timeRemaining, setTimeRemaining] = useState(seconds);
+  const [secondsRemaining, setSecondsRemaining] = useState(seconds);
 
-  const { state, dispatch } = useDrawingSessionContext();
+  const { state } = useDrawingSessionContext();
   const currentImage = state.current;
 
   useEffect(() => {
-    setTimeRemaining(currentImage.interval);
+    if (currentImage) {
+      setSecondsRemaining(currentImage.interval);
+    }
   }, [currentImage]);
 
   useEffect(() => {
-    // TODO: handle the case when paused and user presses Next.
-    // Timer should reset but it does not
     if (isPaused) {
       return;
     }
 
-    // TODO: timeRemaining is not being reset when all intervals are the same
-    if (timeRemaining < 0) {
+    if (secondsRemaining < 0) {
       onTimeElapsed();
       return;
     }
 
     const interval = setInterval(() => {
-      setTimeRemaining((prev) => prev - 1);
+      setSecondsRemaining((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeRemaining, isPaused, onTimeElapsed, seconds]);
+  }, [secondsRemaining, isPaused, onTimeElapsed]);
 
-  return <div>{timeRemaining >= 0 ? timeRemaining : 0}</div>;
+  return (
+    <div>{displayTimeRemaining(getTimeFromSeconds(secondsRemaining))}</div>
+  );
+}
+
+/**
+ * A pretty specific way to display minutes and seconds:
+ * 1:59, 1:09, 1:00, 59, 9, 0
+ */
+function displayTimeRemaining(time: Time) {
+  const minutes = time.minutes > 0 ? `${time.minutes}:` : "";
+  const seconds =
+    time.minutes > 0 && time.seconds < 10
+      ? `0${time.seconds}`
+      : `${time.seconds}`;
+
+  return `${minutes}${seconds}`;
 }

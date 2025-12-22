@@ -73,7 +73,9 @@ function init(
   };
 
   const aggregate = payload.sections.reduce((prev, cur) => {
-    const intervals = Array(Number(cur.count)).fill(Number(cur.interval));
+    const intervals = Array(Number(cur.count)).fill(
+      Number(cur.interval),
+    ) as Array<number>;
     return {
       intervals: [...prev.intervals, ...intervals],
       total: prev.total + Number(cur.count),

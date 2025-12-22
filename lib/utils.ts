@@ -1,3 +1,4 @@
+import { Time } from "@/components/drawing-session/types";
 import { clsx, type ClassValue } from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { twMerge } from "tailwind-merge";
@@ -40,4 +41,17 @@ export function getIntervalLabel(interval: string): string {
     return `1 minute`;
   }
   return `${n / 60} minutes`;
+}
+
+/**
+ * Returns the given value of seconds in minutes and seconds
+ */
+export function getTimeFromSeconds(value: number): Time {
+  const minutes = Math.floor(value / 60);
+  const seconds = value - 60 * minutes;
+
+  return {
+    minutes,
+    seconds,
+  };
 }
