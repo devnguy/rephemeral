@@ -127,11 +127,11 @@ export function SessionConfig(props: SessionConfigProps) {
   };
 
   async function onSubmit(data: SessionConfigFormSchema) {
-    console.log({ data });
+    // console.log({ data });
     const sections = getSectionsFromFormData(data);
 
     const response = await getPinsByBoardId(data.boardId);
-    console.log({ bookmark: response.bookmark });
+    const bookmark = response.bookmark;
     const images = getImagesFromResponse(response);
 
     dispatch({
@@ -139,12 +139,14 @@ export function SessionConfig(props: SessionConfigProps) {
       payload: { sections, boardId: data.boardId, images },
     });
 
-    router.push("/app/session");
+    const searchParams = bookmark ? `?cursor=${bookmark}` : "";
+
+    router.push(`/app/session${searchParams}`);
   }
 
-  useEffect(() => {
-    console.log({ state });
-  }, [state]);
+  // useEffect(() => {
+  //   console.log({ state });
+  // }, [state]);
 
   return (
     <Form {...form}>

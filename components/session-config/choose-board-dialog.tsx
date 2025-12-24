@@ -77,7 +77,6 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
               defaultValue={selectedBoard}
               value={selectedBoardInput}
               onValueChangeAction={(board: BoardItem) => {
-                console.log("onchangeaction", board);
                 setSelectedBoardInput(board);
               }}
             />
