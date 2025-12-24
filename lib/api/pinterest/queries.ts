@@ -16,18 +16,14 @@ export const fetcher = async (
       items: [],
     };
   }
-  const response = await fetch(
-    // `https://api.pinterest.com/v5/boards/${boardId}/pins?page_size=250${cursorSearchParam}`,
-    url,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${session?.access_token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${session?.access_token}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
     },
-  );
+  });
   return await response.json();
 };
 

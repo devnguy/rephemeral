@@ -86,6 +86,7 @@ export default function DrawingSession() {
           </div>
         </div>
       ) : !state.current ? (
+        // TODO: a proper loading ui
         <div>Loading</div>
       ) : (
         <div className="flex flex-col justify-center space-y-4 items-center h-full">
