@@ -5,12 +5,13 @@ import { Controller } from "@/components/drawing-session/controller";
 import { CurrentImage } from "@/components/drawing-session/current-image";
 import { useDrawingSessionContext } from "@/components/drawing-session/context";
 import { Timer } from "@/components/drawing-session/timer";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { fetcher } from "@/lib/api/pinterest/queries";
 import { ImageSourceResponse, Pin } from "@/app/types";
-import { getImagesFromResponse } from "./helpers";
+import { getImagesFromResponse } from "@/components/drawing-session/helpers";
 
 const getKey =
   (boardId: string | undefined): SWRInfiniteKeyLoader =>
@@ -22,7 +23,6 @@ const getKey =
 
     // reached the end
     if (!previousPageData?.bookmark) {
-      console.log("reached the end");
       return null;
     }
 
@@ -42,6 +42,7 @@ export default function DrawingSession() {
     console.log(error);
   }
 
+  // Changes don't trigger a rerender
   const processedPagesRef = useRef(0);
   const sessionStartedRef = useRef(false);
 
@@ -76,33 +77,37 @@ export default function DrawingSession() {
 
   return (
     <div className="py-12 px-4 h-screen w-full">
-      {state.isStopped ? (
-        <div className="flex flex-col justify-center space-y-4 items-center h-full">
-          <p className="">Session Complete</p>
-          <div>
-            <Link href={"/app"}>
-              <Button>Back</Button>
-            </Link>
-          </div>
-        </div>
-      ) : !state.current ? (
-        // TODO: a proper loading ui
-        <div>Loading</div>
-      ) : (
-        <div className="flex flex-col justify-center space-y-4 items-center h-full">
-          <div className="relative w-full h-[80vh] flex items-center justify-center">
-            {state.current && <CurrentImage src={state.current.src} />}
-          </div>
-          <Controller />
-          {state.current && (
-            <Timer
-              seconds={state.current.interval}
-              onTimeElapsed={handleForward}
-              isPaused={state.isPaused}
-            />
-          )}
-        </div>
-      )}
+      <div className="flex flex-col justify-center space-y-4 items-center h-full">
+        {state.isStopped ? (
+          <>
+            <p className="text-lg">Session Complete</p>
+            <div>
+              <Link href={"/app"}>
+                <Button>Back</Button>
+              </Link>
+            </div>
+          </>
+        ) : !sessionStartedRef.current ? (
+          <>
+            <p className="text-lg">Preparing Session</p>
+            <Spinner className="size-8" />
+          </>
+        ) : (
+          <>
+            <div className="relative w-full h-[80vh] flex items-center justify-center">
+              {state.current && <CurrentImage src={state.current.src} />}
+            </div>
+            <Controller />
+            {state.current && (
+              <Timer
+                seconds={state.current.interval}
+                onTimeElapsed={handleForward}
+                isPaused={state.isPaused}
+              />
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

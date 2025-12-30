@@ -102,6 +102,9 @@ function init(
 }
 
 function startSession(state: DrawingSessionState): DrawingSessionState {
+  if (state.pool.images.length === 0) {
+    throw new Error("No images in image pool");
+  }
   // Take a new item from the pool
   const randomIndex = getRandomInt(state.pool.images.length);
 
