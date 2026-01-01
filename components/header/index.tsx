@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { H3 } from "@/components/ui/typography";
 import { auth, signIn, signOut } from "@/auth";
-import { ThemeToggleButton } from "../theme/toggle-button";
+import { ThemeSelect } from "../theme/toggle-button";
 
 export async function Header() {
   const session = await auth();
@@ -18,7 +18,7 @@ export async function Header() {
       </div>
       <div className="flex items-center space-x-2">
         {!session?.user ? <SignInButton /> : <SignOutButton />}
-        <ThemeToggleButton />
+        <ThemeSelect />
       </div>
     </div>
   );
