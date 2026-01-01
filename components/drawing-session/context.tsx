@@ -33,6 +33,7 @@ function getDefaultState(): DrawingSessionState {
     },
     isStopped: false,
     isPaused: false,
+    isHardModeEnabled: false,
   };
 }
 

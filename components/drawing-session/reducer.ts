@@ -19,6 +19,7 @@ type DrawingSessionActionInit = {
   payload: {
     boardId: string;
     sections: Array<SessionSection>;
+    isHardModeEnabled: boolean;
   };
 };
 type DrawingSessionActionStartSession = {
@@ -98,6 +99,7 @@ function init(
     isStopped: false,
     isPaused: false,
     boardId: payload.boardId,
+    isHardModeEnabled: payload.isHardModeEnabled,
   };
 }
 

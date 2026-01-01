@@ -18,6 +18,7 @@ export type DrawingSessionState = {
   };
   isStopped: boolean;
   isPaused: boolean;
+  isHardModeEnabled: boolean;
   boardId?: string;
   current?: Reference;
 };

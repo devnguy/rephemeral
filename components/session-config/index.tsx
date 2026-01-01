@@ -68,6 +68,7 @@ const FormSchema = z.object({
       interval: numericString,
     }),
   ),
+  isHardModeEnabled: z.boolean(),
 });
 
 export type SessionConfigFormSchema = z.infer<typeof FormSchema>;
@@ -85,6 +86,7 @@ const defaultValues = {
   sessionType: SessionType.STANDARD,
   standardModeInput: DEFAULT_SECTION_CONFIG,
   classModeInput: ClassPreset.THIRTY_MIN,
+  isHardModeEnabled: false,
   // temporary values for easier testing
   customModeInput: [
     {
@@ -127,12 +129,16 @@ export function SessionConfig(props: SessionConfigProps) {
   };
 
   async function onSubmit(data: SessionConfigFormSchema) {
-    // console.log({ data });
+    console.log({ data });
     const sections = getSectionsFromFormData(data);
 
     dispatch({
       type: "INIT",
-      payload: { sections, boardId: data.boardId },
+      payload: {
+        sections,
+        boardId: data.boardId,
+        isHardModeEnabled: data.isHardModeEnabled,
+      },
     });
 
     router.push(`/app/session`);
@@ -240,17 +246,32 @@ export function SessionConfig(props: SessionConfigProps) {
           <SectionSubHeading>Settings</SectionSubHeading>
           <Card className="p-0">
             <CardContent>
-              <FormRow>
-                <div className="flex flex-col flex-3 gap-1">
-                  <FormLabel htmlFor="hardMode">Hard Mode</FormLabel>
-                  <FormDescription>
-                    Disable pause, back, and skip controls during the session
-                  </FormDescription>
-                </div>
-                <div>
-                  <Switch id="hardMode" name="hardMode" />
-                </div>
-              </FormRow>
+              <FormField
+                control={form.control}
+                name="isHardModeEnabled"
+                render={({ field }) => (
+                  <FormRow>
+                    <div className="flex flex-col flex-3 gap-1">
+                      <FormLabel htmlFor="isHardModeEnabled">
+                        Hard Mode
+                      </FormLabel>
+                      <FormDescription>
+                        Disable pause, back, and skip controls during the
+                        session
+                      </FormDescription>
+                    </div>
+                    <div>
+                      <Switch
+                        name="isHardModeEnabled"
+                        id="isHardModeEnabled"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        defaultChecked={defaultValues.isHardModeEnabled}
+                      />
+                    </div>
+                  </FormRow>
+                )}
+              />
             </CardContent>
           </Card>
         </div>

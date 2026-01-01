@@ -13,16 +13,22 @@ import { useCallback, useEffect } from "react";
 export function Controller() {
   const { state, dispatch } = useDrawingSessionContext();
   const handleForward = useCallback(() => {
-    dispatch({ type: "FORWARD" });
-  }, [dispatch]);
+    if (!state.isHardModeEnabled) {
+      dispatch({ type: "FORWARD" });
+    }
+  }, [dispatch, state.isHardModeEnabled]);
 
   const handleBack = useCallback(() => {
-    dispatch({ type: "BACK" });
-  }, [dispatch]);
+    if (!state.isHardModeEnabled) {
+      dispatch({ type: "BACK" });
+    }
+  }, [dispatch, state.isHardModeEnabled]);
 
   const handleTogglePause = useCallback(() => {
-    dispatch({ type: "TOGGLE_PAUSE" });
-  }, [dispatch]);
+    if (!state.isHardModeEnabled) {
+      dispatch({ type: "TOGGLE_PAUSE" });
+    }
+  }, [dispatch, state.isHardModeEnabled]);
 
   const handleStop = useCallback(() => {
     dispatch({ type: "STOP" });
@@ -64,19 +70,31 @@ export function Controller() {
 
   return (
     <div className="flex space-x-4">
-      <Button variant="outline" onClick={handleBack}>
+      <Button
+        variant="outline"
+        disabled={state.isHardModeEnabled}
+        onClick={handleBack}
+      >
         <ChevronLeft />
       </Button>
-      <Button variant="outline" onClick={handleTogglePause}>
+      <Button
+        variant="outline"
+        disabled={state.isHardModeEnabled}
+        onClick={handleTogglePause}
+      >
         {state.isPaused ? <Play /> : <Pause />}
       </Button>
       <Button variant="outline" onClick={handleStop}>
         <Square />
       </Button>
-      <Button variant="outline" onClick={handleForward}>
+      <Button
+        variant="outline"
+        disabled={state.isHardModeEnabled}
+        onClick={handleForward}
+      >
         <ChevronRight />
       </Button>
-      <Button variant="outline">
+      <Button variant="outline" disabled={state.isHardModeEnabled}>
         <ChevronsRight />
       </Button>
     </div>
