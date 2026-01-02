@@ -70,6 +70,30 @@ export function Timer(props: TimerProps) {
   };
 
   return (
-    <div>{displayTimeRemaining(getTimeFromSeconds(secondsRemaining))}</div>
+    <div>
+      <TimeElapsedProgressBar
+        seconds={seconds}
+        secondsRemaining={secondsRemaining}
+      />
+      <div>{displayTimeRemaining(getTimeFromSeconds(secondsRemaining))}</div>
+    </div>
   );
 }
+
+const TimeElapsedProgressBar = (props: {
+  seconds: number;
+  secondsRemaining: number;
+}) => {
+  const { seconds, secondsRemaining } = props;
+  useEffect(() => {
+    console.log({ seconds, secondsRemaining });
+  }, [seconds, secondsRemaining]);
+  return (
+    <div
+      className="bg-primary h-1.5 absolute top-0 left-0 transition-all"
+      style={{
+        width: `${(1 - secondsRemaining / seconds) * 100}%`,
+      }}
+    ></div>
+  );
+};
