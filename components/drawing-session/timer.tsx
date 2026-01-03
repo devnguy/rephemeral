@@ -85,9 +85,6 @@ const TimeElapsedProgressBar = (props: {
   secondsRemaining: number;
 }) => {
   const { seconds, secondsRemaining } = props;
-  useEffect(() => {
-    console.log({ seconds, secondsRemaining });
-  }, [seconds, secondsRemaining]);
   return (
     <div
       className="bg-primary h-1.5 absolute top-0 left-0 transition-all"

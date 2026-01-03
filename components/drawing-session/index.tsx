@@ -16,6 +16,9 @@ import { getImagesFromResponse } from "@/components/drawing-session/helpers";
 const getKey =
   (boardId: string | undefined): SWRInfiniteKeyLoader =>
   (pageIndex: number, previousPageData: ImageSourceResponse<Pin>) => {
+    if (boardId === "local") {
+      return null;
+    }
     // first page, we don't have `previousPageData`
     if (pageIndex === 0) {
       return `https://api.pinterest.com/v5/boards/${boardId}/pins?page_size=250`;
@@ -45,6 +48,10 @@ export default function DrawingSession() {
   // Changes don't trigger a rerender
   const processedPagesRef = useRef(0);
   const sessionStartedRef = useRef(false);
+
+  if (state.boardId === "local" && !sessionStartedRef.current) {
+    sessionStartedRef.current = true;
+  }
 
   useEffect(() => {
     if (!data) return;

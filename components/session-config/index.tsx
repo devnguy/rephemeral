@@ -54,22 +54,44 @@ export type SessionSection = {
   interval: string;
 };
 
-const FormSchema = z.object({
-  boardId: z.string("Board required"),
-  sessionType: z.enum(SessionType),
-  standardModeInput: z.object({
-    count: numericString,
-    interval: numericString,
-  }),
-  classModeInput: z.enum(ClassPreset),
-  customModeInput: z.array(
-    z.object({
+const FormSchema = z
+  .object({
+    imageSource: z.enum(ImageSourceType),
+    boardId: z.string("Board required").optional(),
+    sessionType: z.enum(SessionType),
+    standardModeInput: z.object({
       count: numericString,
       interval: numericString,
     }),
-  ),
-  isHardModeEnabled: z.boolean(),
-});
+    classModeInput: z.enum(ClassPreset),
+    customModeInput: z.array(
+      z.object({
+        count: numericString,
+        interval: numericString,
+      }),
+    ),
+    isHardModeEnabled: z.boolean(),
+    files:
+      typeof window === "undefined"
+        ? z.any()
+        : z.instanceof(FileList, { message: "Required (in def)" }).optional(),
+  })
+  .refine(
+    (data) =>
+      !(
+        data.imageSource === ImageSourceType.PINTEREST &&
+        data.boardId === undefined
+      ),
+    { message: "board required", path: ["boardId"] },
+  )
+  .refine(
+    (data) =>
+      !(data.imageSource === ImageSourceType.LOCAL && data.files === undefined),
+    {
+      message: "files required",
+      path: ["files"],
+    },
+  );
 
 export type SessionConfigFormSchema = z.infer<typeof FormSchema>;
 
@@ -83,6 +105,7 @@ type SessionConfigProps = {
 };
 
 const defaultValues = {
+  imageSource: ImageSourceType.LOCAL,
   sessionType: SessionType.STANDARD,
   standardModeInput: DEFAULT_SECTION_CONFIG,
   classModeInput: ClassPreset.THIRTY_MIN,
@@ -129,17 +152,41 @@ export function SessionConfig(props: SessionConfigProps) {
   };
 
   async function onSubmit(data: SessionConfigFormSchema) {
-    console.log({ data });
     const sections = getSectionsFromFormData(data);
 
-    dispatch({
-      type: "INIT",
-      payload: {
-        sections,
-        boardId: data.boardId,
-        isHardModeEnabled: data.isHardModeEnabled,
-      },
-    });
+    if (data.imageSource === ImageSourceType.PINTEREST && data.boardId) {
+      dispatch({
+        type: "INIT",
+        payload: {
+          sections,
+          boardId: data.boardId,
+          isHardModeEnabled: data.isHardModeEnabled,
+        },
+      });
+    }
+    if (data.imageSource === ImageSourceType.LOCAL) {
+      const fileUrls: string[] = [];
+      if (data.files instanceof FileList) {
+        for (const file of data.files) {
+          fileUrls.push(URL.createObjectURL(file));
+        }
+      }
+      dispatch({
+        type: "INIT",
+        payload: {
+          sections,
+          boardId: "local",
+          isHardModeEnabled: data.isHardModeEnabled,
+        },
+      });
+      dispatch({
+        type: "ADD_TO_IMAGE_POOL",
+        payload: {
+          images: fileUrls,
+        },
+      });
+      dispatch({ type: "START_SESSION" });
+    }
 
     router.push(`/app/session`);
   }
@@ -154,48 +201,82 @@ export function SessionConfig(props: SessionConfigProps) {
 
         <div className="flex flex-col gap-2">
           <SectionSubHeading>Image Source</SectionSubHeading>
-          <Tabs defaultValue={ImageSourceType.PINTEREST}>
-            <TabsList>
-              <TabsTrigger value={ImageSourceType.PINTEREST}>
-                Pinterest
-              </TabsTrigger>
-              <TabsTrigger value={ImageSourceType.LOCAL}>Local</TabsTrigger>
-            </TabsList>
 
-            <TabsContent value={ImageSourceType.PINTEREST}>
-              <Card className="p-0">
-                <CardContent>
-                  <FormRow>
-                    <div className="flex flex-col flex-3 gap-1">
-                      <FormLabel htmlFor="boardId">Board</FormLabel>
-                      <FormDescription>
-                        The Pinterest board containing the reference images
-                      </FormDescription>
+          <FormField
+            control={form.control}
+            name="imageSource"
+            render={({ field }) => (
+              <Tabs
+                defaultValue={defaultValues.imageSource}
+                onValueChange={field.onChange}
+              >
+                <TabsList>
+                  <TabsTrigger value={ImageSourceType.PINTEREST}>
+                    Pinterest
+                  </TabsTrigger>
+                  <TabsTrigger value={ImageSourceType.LOCAL}>Local</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value={ImageSourceType.PINTEREST}>
+                  <Card className="p-0">
+                    <CardContent>
+                      <FormRow>
+                        <div className="flex flex-col flex-3 gap-1">
+                          <FormLabel htmlFor="boardId">Board</FormLabel>
+                          <FormDescription>
+                            The Pinterest board containing the reference images
+                          </FormDescription>
+                          <FormField
+                            name="boardId"
+                            // ChooseBoardDialog handles the rendering for this form field,
+                            // but we still need to display the error message
+                            render={() => <FormMessage />}
+                          />
+                        </div>
+                        {!session?.user ? (
+                          <LoginButton />
+                        ) : (
+                          // choose board button or chosen board
+                          <ChooseBoardDialog boardsPromise={boardsPromise} />
+                        )}
+                      </FormRow>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                <TabsContent value={ImageSourceType.LOCAL}>
+                  <Card className="p-0">
+                    <CardContent>
+                      {/* <LocalImageInputField /> */}
                       <FormField
-                        name="boardId"
-                        // ChooseBoardDialog handles the rendering for this form field,
-                        // but we still need to display the error message
-                        render={() => <FormMessage />}
+                        control={form.control}
+                        name="files"
+                        render={({ field }) => (
+                          <FormItem className="py-3">
+                            <div className="flex gap-1">
+                              <FormLabel>Image Files</FormLabel>
+                              <FormDescription>
+                                The reference images to use during the session
+                              </FormDescription>
+                            </div>
+                            <FileDropInput
+                              name="files"
+                              onChange={(event) => {
+                                field.onChange(
+                                  event.target?.files ?? undefined,
+                                );
+                              }}
+                              numberOfFiles={field.value?.length}
+                            />
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    {!session?.user ? (
-                      <LoginButton />
-                    ) : (
-                      // choose board button or chosen board
-                      <ChooseBoardDialog boardsPromise={boardsPromise} />
-                    )}
-                  </FormRow>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value={ImageSourceType.LOCAL}>
-              <Card className="p-0">
-                <CardContent>
-                  <LocalImageInputField />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            )}
+          />
         </div>
 
         <div className="flex flex-col gap-2">
@@ -281,19 +362,5 @@ export function SessionConfig(props: SessionConfigProps) {
         </div>
       </form>
     </Form>
-  );
-}
-
-function LocalImageInputField() {
-  return (
-    <FormItem className="py-3">
-      <div className="flex gap-1">
-        <FormLabel>Image Files</FormLabel>
-        <FormDescription>
-          The reference images to use during the session
-        </FormDescription>
-      </div>
-      <FileDropInput />
-    </FormItem>
   );
 }

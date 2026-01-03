@@ -20,19 +20,25 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   );
 }
 
-function FileDropInput() {
+function FileDropInput({
+  name,
+  numberOfFiles,
+  ...props
+}: React.ComponentProps<"input"> & { name: string; numberOfFiles: number }) {
   const BrowseButton = () => {
     return (
       <span className="inline-flex">
-        <Label htmlFor="file" className="hover:cursor-pointer underline">
-          Browse
+        <Label htmlFor={name} className="hover:cursor-pointer underline">
+          Choose Files
         </Label>
         <Input
-          id="file"
+          id={name}
+          name={name}
           type="file"
           multiple
           accept="image/*"
           className="hidden"
+          {...props}
         />
       </span>
     );
@@ -44,10 +50,11 @@ function FileDropInput() {
         <div className="flex items-center space-x-2">
           <Images />
           <p>
-            Drag & drop images/folder or <BrowseButton />
+            <BrowseButton />
           </p>
         </div>
       </div>
+      {numberOfFiles && <p>{`${numberOfFiles} files selected`}</p>}
     </div>
   );
 }
