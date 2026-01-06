@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ImageSourceType, SessionType } from ".";
-import { ClassPreset } from "./class-mode-form";
+import { ClassPreset } from "@/components/session-config/class-mode-form";
 
 // TODO: Map these values eventually
 export function CountSelect({ ...props }: React.ComponentProps<typeof Select>) {

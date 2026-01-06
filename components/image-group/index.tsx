@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ExtraSmall, SectionHeading } from "@/components/ui/typography";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { use } from "react";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { formatDistanceToNowShort } from "@/lib/utils";

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { H3 } from "@/components/ui/typography";
 import { auth, signIn, signOut } from "@/auth";
-import { ThemeSelect } from "../theme/toggle-button";
+import { ThemeSelect } from "@/components/theme/toggle-button";
 
 export async function Header() {
   const session = await auth();

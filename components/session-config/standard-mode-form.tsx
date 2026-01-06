@@ -7,8 +7,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SessionConfigFormSchema } from ".";
-import { CountSelect, IntervalSelect } from "./select";
-import { Separator } from "../ui/separator";
+import {
+  CountSelect,
+  IntervalSelect,
+} from "@/components/session-config/select";
+import { Separator } from "@/components/ui/separator";
 
 export function StandardModeForm() {
   const { control } = useFormContext<SessionConfigFormSchema>();

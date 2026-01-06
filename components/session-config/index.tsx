@@ -19,16 +19,19 @@ import { useRouter } from "next/navigation";
 import { CustomModeForm } from "@/components//session-config/custom-mode-form";
 import { StandardModeForm } from "@/components//session-config/standard-mode-form";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
-import { SectionHeading, SectionSubHeading } from "../ui/typography";
+import { SectionHeading, SectionSubHeading } from "@/components/ui/typography";
 import { Switch } from "@/components/ui/switch";
 import { FileDropInput } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChooseBoardDialog } from "@/components/session-config/choose-board-dialog";
-import { ClassModeForm, ClassPreset } from "./class-mode-form";
-import { getClassModeValueFromPreset } from "./class-preset-map";
+import {
+  ClassModeForm,
+  ClassPreset,
+} from "@/components/session-config/class-mode-form";
+import { getClassModeValueFromPreset } from "@/components/session-config/class-preset-map";
 import { useSession } from "next-auth/react";
-import { LoginButton } from "./login-button";
+import { LoginButton } from "@/components/session-config/login-button";
 
 export enum SessionType {
   STANDARD = "STANDARD",

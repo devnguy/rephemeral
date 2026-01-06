@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Suspense, useState } from "react";
-import { BoardGroup } from "../image-group";
-import { BoardGroupSkeleton } from "../ui/skeleton";
+import { BoardGroup } from "@/components/image-group";
+import { BoardGroupSkeleton } from "@/components/ui/skeleton";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { SessionConfigFormSchema } from ".";
 import { useFormContext } from "react-hook-form";

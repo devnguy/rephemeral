@@ -2,7 +2,7 @@
 
 import { useFormContext } from "react-hook-form";
 import { SessionConfigFormSchema } from "@/components/session-config";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 import {
   FormDescription,
   FormField,
@@ -10,9 +10,9 @@ import {
   FormLabel,
   FormMessage,
   FormRow,
-} from "../ui/form";
-import { ClassPresetSelect } from "./select";
-import { getClassModeValueFromPreset } from "./class-preset-map";
+} from "@/components/ui/form";
+import { ClassPresetSelect } from "@/components/session-config/select";
+import { getClassModeValueFromPreset } from "@/components/session-config/class-preset-map";
 import { getIntervalLabel } from "@/lib/utils";
 
 export enum ClassPreset {

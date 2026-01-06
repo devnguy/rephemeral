@@ -1,5 +1,5 @@
 import { SessionSection } from ".";
-import { ClassPreset } from "./class-mode-form";
+import { ClassPreset } from "@/components/session-config/class-mode-form";
 
 export const getClassModeValueFromPreset = (
   preset: ClassPreset,

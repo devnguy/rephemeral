@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Pause, Play, Square } from "lucide-react";
-import { useDrawingSessionContext } from "./context";
+import { useDrawingSessionContext } from "@/components/drawing-session/context";
 import { useCallback, useEffect } from "react";
 
 export function Controller() {
