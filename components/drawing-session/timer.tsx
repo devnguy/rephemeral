@@ -21,6 +21,8 @@ export function Timer(props: TimerProps) {
 
   useEffect(() => {
     if (currentImage) {
+      // TODO:
+      // eslint-disable-next-line
       setSecondsRemaining(currentImage.interval);
     }
   }, [currentImage]);
