@@ -93,7 +93,7 @@ export default function DrawingSession() {
           <>
             <p className="text-lg">Session Complete</p>
             <div>
-              <Link href={"/app"}>
+              <Link href={"/"}>
                 <Button>Back</Button>
               </Link>
             </div>

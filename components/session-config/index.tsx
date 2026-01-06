@@ -191,7 +191,7 @@ export function SessionConfig(props: SessionConfigProps) {
       dispatch({ type: "START_SESSION" });
     }
 
-    router.push(`/app/session`);
+    router.push(`/session`);
   }
 
   return (

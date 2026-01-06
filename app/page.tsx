@@ -1,37 +1,17 @@
-import Image from "next/image";
+import PageLayout from "@/components/layout/page-layout";
+import { SessionConfig } from "@/components/session-config";
+import { H1 } from "@/components/ui/typography";
+import { getBoards } from "@/lib/api/pinterest/queries";
 
-export default function Home() {
+export default async function Page() {
+  const boardsPromise = getBoards();
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Login
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-      </footer>
-    </div>
+    <PageLayout>
+      <div className="py-6">
+        <H1 className="text-left">Drawing Session</H1>
+      </div>
+      <SessionConfig boardsPromise={boardsPromise} />
+    </PageLayout>
   );
 }
