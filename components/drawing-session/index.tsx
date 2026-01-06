@@ -35,11 +35,15 @@ const getKey =
 export default function DrawingSession() {
   const { state, dispatch } = useDrawingSessionContext();
 
-  const { data, error } = useSWRInfinite(getKey(state.boardId), fetcher, {
-    initialSize: 5,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data, isLoading, error } = useSWRInfinite(
+    getKey(state.boardId),
+    fetcher,
+    {
+      initialSize: 5,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
 
   if (error) {
     console.log(error);
@@ -49,8 +53,10 @@ export default function DrawingSession() {
   const processedPagesRef = useRef(0);
   const sessionStartedRef = useRef(false);
 
-  if (state.boardId === "local" && !sessionStartedRef.current) {
-    sessionStartedRef.current = true;
+  if (state.boardId === "local") {
+    if (sessionStartedRef.current === null) {
+      sessionStartedRef.current = true;
+    }
   }
 
   useEffect(() => {
@@ -98,7 +104,7 @@ export default function DrawingSession() {
               </Link>
             </div>
           </>
-        ) : !sessionStartedRef.current ? (
+        ) : isLoading ? (
           <>
             <p className="text-lg">Preparing Session</p>
             <Spinner className="size-8" />

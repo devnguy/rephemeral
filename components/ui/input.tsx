@@ -20,37 +20,40 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   );
 }
 
+function BrowseButton({
+  name,
+  ...props
+}: React.ComponentProps<"input"> & { name: string }) {
+  return (
+    <span className="inline-flex">
+      <Label htmlFor={name} className="hover:cursor-pointer underline">
+        Choose Files
+      </Label>
+      <Input
+        id={name}
+        name={name}
+        type="file"
+        multiple
+        accept="image/*"
+        className="hidden"
+        {...props}
+      />
+    </span>
+  );
+}
+
 function FileDropInput({
   name,
   numberOfFiles,
   ...props
 }: React.ComponentProps<"input"> & { name: string; numberOfFiles: number }) {
-  const BrowseButton = () => {
-    return (
-      <span className="inline-flex">
-        <Label htmlFor={name} className="hover:cursor-pointer underline">
-          Choose Files
-        </Label>
-        <Input
-          id={name}
-          name={name}
-          type="file"
-          multiple
-          accept="image/*"
-          className="hidden"
-          {...props}
-        />
-      </span>
-    );
-  };
-
   return (
     <div className="h-full w-full flex flex-col justify-between items-center  rounded-md border-2 border-dashed border-accent p-5">
       <div className="flex items-center h-full">
         <div className="flex items-center space-x-2">
           <Images />
           <p>
-            <BrowseButton />
+            <BrowseButton name={name} {...props} />
           </p>
         </div>
       </div>
