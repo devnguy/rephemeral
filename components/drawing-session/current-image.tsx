@@ -9,15 +9,7 @@ export function CurrentImage(props: CurrentImageProps) {
 
   return (
     <div className="relative w-full h-full">
-      <Image
-        src={
-          src ??
-          "https://i.pinimg.com/736x/1b/76/47/1b76478d2def47c4ebfee4252e94adb4.jpg"
-        }
-        alt=""
-        fill
-        className="object-contain"
-      />
+      {src && <Image src={src} alt="" fill className="object-contain" />}
     </div>
   );
 }

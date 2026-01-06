@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsRight,
-  Pause,
-  Play,
-  Square,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play, Square } from "lucide-react";
 import { useDrawingSessionContext } from "./context";
 import { useCallback, useEffect } from "react";
 
@@ -93,9 +86,6 @@ export function Controller() {
         onClick={handleForward}
       >
         <ChevronRight />
-      </Button>
-      <Button variant="outline" disabled={state.isHardModeEnabled}>
-        <ChevronsRight />
       </Button>
     </div>
   );

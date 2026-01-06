@@ -150,6 +150,13 @@ function forward(state: DrawingSessionState): DrawingSessionState {
     };
   }
 
+  if (state.pool.images.length === 0) {
+    return {
+      ...state,
+      isStopped: true,
+    };
+  }
+
   const nextIndex = state.index + 1;
 
   // We can traverse the history
