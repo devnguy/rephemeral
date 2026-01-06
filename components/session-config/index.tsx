@@ -78,7 +78,7 @@ const FormSchema = z
     files:
       typeof window === "undefined"
         ? z.any()
-        : z.instanceof(FileList, { message: "Required (in def)" }).optional(),
+        : z.instanceof(FileList, { message: "Required" }).optional(),
   })
   .refine(
     (data) =>
@@ -86,13 +86,13 @@ const FormSchema = z
         data.imageSource === ImageSourceType.PINTEREST &&
         data.boardId === undefined
       ),
-    { message: "board required", path: ["boardId"] },
+    { message: "Board required", path: ["boardId"] },
   )
   .refine(
     (data) =>
       !(data.imageSource === ImageSourceType.LOCAL && data.files === undefined),
     {
-      message: "files required",
+      message: "Files required",
       path: ["files"],
     },
   );
