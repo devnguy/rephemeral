@@ -5,7 +5,11 @@ export function Footer() {
   return (
     <footer className="w-full px-16 pb-16 space-y-4 flex justify-center">
       <div className="flex space-x-2">
-        <Link href="/" className="hover:bg-accent ">
+        <Link
+          href="https://ko-fi.com/devnguy"
+          target="_blank"
+          className="hover:underline"
+        >
           <div className="text-xs flex space-x-1 items-center h-6 px-3 rounded-md">
             <div>
               <Coins size={16} />
@@ -13,7 +17,7 @@ export function Footer() {
             <div>Support</div>
           </div>
         </Link>
-        <Link href="/privacy" className="hover:bg-accent">
+        <Link href="/privacy" className="hover:underline">
           <div className="text-xs flex space-x-1 items-center h-6 px-3 rounded-md">
             <div>
               <Lock size={16} />
@@ -24,7 +28,7 @@ export function Footer() {
         <Link
           href="http://github.com/devnguy/rephemeral"
           target="_blank"
-          className="hover:bg-accent"
+          className="hover:underline"
         >
           <div className="text-xs flex space-x-1 items-center h-6 px-3 rounded-md">
             <div>
