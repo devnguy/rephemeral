@@ -16,7 +16,6 @@ export function CurrentImage(props: CurrentImageProps) {
           fill
           className="object-contain"
           quality={70}
-          priority={true}
           preload={true}
         />
       )}

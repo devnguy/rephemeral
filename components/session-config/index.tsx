@@ -33,6 +33,7 @@ import { getClassModeValueFromPreset } from "@/components/session-config/class-p
 import { use } from "react";
 import { Session } from "next-auth";
 import { LoginButtonClient } from "@/components/session-config/login-button";
+import { setCookie } from "cookies-next/client";
 
 export enum SessionType {
   STANDARD = "STANDARD",
@@ -107,9 +108,10 @@ export const DEFAULT_SECTION_CONFIG = {
 type SessionConfigProps = {
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
   sessionPromise: Promise<Session | null>;
+  savedFormData: SessionConfigFormSchema | undefined;
 };
 
-const defaultValues = {
+const defaultFormData: SessionConfigFormSchema = {
   imageSource: ImageSourceType.PINTEREST,
   sessionType: SessionType.STANDARD,
   standardModeInput: DEFAULT_SECTION_CONFIG,
@@ -133,14 +135,20 @@ const defaultValues = {
       interval: "600",
     },
   ],
+  files: undefined
 };
 
 export function SessionConfig(props: SessionConfigProps) {
-  const { boardsPromise, sessionPromise } = props;
+  const { boardsPromise, sessionPromise, savedFormData } = props;
   const session = use(sessionPromise);
-
   const router = useRouter();
   const { dispatch } = useDrawingSessionContext();
+
+  const defaultValues: SessionConfigFormSchema =
+  {
+    ...defaultFormData,
+    ...savedFormData
+  }
 
   const form = useForm<SessionConfigFormSchema>({
     resolver: zodResolver(FormSchema),
@@ -196,6 +204,8 @@ export function SessionConfig(props: SessionConfigProps) {
       });
       dispatch({ type: "START_SESSION" });
     }
+    // don't save local file urls in the cookie
+    setCookie("savedFormData", { ...data, files: undefined })
 
     router.push(`/session`);
   }
@@ -246,7 +256,10 @@ export function SessionConfig(props: SessionConfigProps) {
                           <LoginButtonClient />
                         ) : (
                           // choose board button or chosen board
-                          <ChooseBoardDialog boardsPromise={boardsPromise} />
+                          <ChooseBoardDialog
+                            boardsPromise={boardsPromise}
+                            defaultBoardId={defaultValues.boardId}
+                          />
                         )}
                       </FormRow>
                     </CardContent>
@@ -255,7 +268,6 @@ export function SessionConfig(props: SessionConfigProps) {
                 <TabsContent value={ImageSourceType.LOCAL}>
                   <Card className="p-0">
                     <CardContent>
-                      {/* <LocalImageInputField /> */}
                       <FormField
                         control={form.control}
                         name="files"
@@ -339,6 +351,7 @@ export function SessionConfig(props: SessionConfigProps) {
               <FormField
                 control={form.control}
                 name="isHardModeEnabled"
+                defaultValue={defaultValues.isHardModeEnabled}
                 render={({ field }) => (
                   <FormRow>
                     <div className="flex flex-col flex-3 gap-1">

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Suspense, useState } from "react";
+import { Suspense, use, useState } from "react";
 import { BoardGroup } from "@/components/image-group";
 import { BoardGroupSkeleton } from "@/components/ui/skeleton";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
@@ -20,6 +20,7 @@ import { SquarePen } from "lucide-react";
 
 type ChooseBoardDialogProps = {
   boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
+  defaultBoardId?: string;
 };
 
 /**
@@ -34,10 +35,15 @@ type ChooseBoardDialogProps = {
  * form field value and manually clear the error
  */
 export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
-  const { boardsPromise } = props;
+  const { boardsPromise, defaultBoardId } = props;
   const { setValue, clearErrors } = useFormContext<SessionConfigFormSchema>();
+  const boards = use(boardsPromise)
 
-  const [selectedBoard, setSelectedBoard] = useState<BoardItem>();
+  const [selectedBoard, setSelectedBoard] = useState<BoardItem | undefined>(
+    defaultBoardId
+      ? boards.items.find(item => item.id === defaultBoardId)
+      : undefined
+  );
   const [selectedBoardInput, setSelectedBoardInput] = useState<BoardItem>();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -65,15 +71,15 @@ export function ChooseBoardDialog(props: ChooseBoardDialogProps) {
           <Button variant="outline">Choose Board</Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>Choose Board</DialogTitle>
           <DialogDescription />
         </DialogHeader>
-        <ScrollArea className="h-[420px]">
+        <ScrollArea className="h-105">
           <Suspense fallback={<BoardGroupSkeleton />}>
             <BoardGroup
-              boardsPromise={boardsPromise}
+              boards={boards}
               defaultValue={selectedBoard}
               value={selectedBoardInput}
               onValueChangeAction={(board: BoardItem) => {

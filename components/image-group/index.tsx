@@ -3,12 +3,11 @@
 import Image from "next/image";
 import { ExtraSmall, SectionHeading } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
-import { use } from "react";
 import { BoardItem, ImageSourceResponse } from "@/app/types";
 import { formatDistanceToNowShort } from "@/lib/utils";
 
 type BoardGroupProps = {
-  boardsPromise: Promise<ImageSourceResponse<BoardItem>>;
+  boards: ImageSourceResponse<BoardItem>;
   onValueChangeAction: (v: BoardItem) => void;
   defaultValue?: BoardItem;
   value?: BoardItem;
@@ -21,8 +20,7 @@ type BoardCardProps = {
 };
 
 export function BoardGroup(props: BoardGroupProps): React.ReactElement {
-  const { boardsPromise, onValueChangeAction, defaultValue, value } = props;
-  const boards = use(boardsPromise);
+  const { boards, onValueChangeAction, defaultValue, value } = props;
 
   return (
     <div className="flex justify-center w-full">
@@ -79,7 +77,6 @@ export default function BoardGroupItem(props: BoardCardProps) {
                 fill
                 className="object-cover"
                 sizes="100vh"
-                priority
               />
             </div>
 
